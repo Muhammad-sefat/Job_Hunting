@@ -6,6 +6,7 @@ import axios from "axios";
 
 const TabCategories = () => {
   const [jobs, setJobs] = useState([]);
+  console.log(jobs);
   useEffect(() => {
     const getData = async () => {
       const { data } = await axios(`${import.meta.env.VITE_API_URL}/jobs`);
@@ -33,7 +34,7 @@ const TabCategories = () => {
         <TabPanel>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {jobs
-              .filter((j) => j.categories === "Web Development")
+              .filter((j) => j.category === "Web Development")
               .map((job) => (
                 <JobCard key={job._id} job={job}></JobCard>
               ))}
@@ -42,7 +43,7 @@ const TabCategories = () => {
         <TabPanel>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {jobs
-              .filter((j) => j.categories === "Graphics Design")
+              .filter((j) => j.category === "Graphics Design")
               .map((job) => (
                 <JobCard key={job._id} job={job}></JobCard>
               ))}
@@ -51,7 +52,7 @@ const TabCategories = () => {
         <TabPanel>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {jobs
-              .filter((j) => j.categories === "Digital Marketing")
+              .filter((j) => j.category === "Digital Marketing")
               .map((job) => (
                 <JobCard key={job._id} job={job}></JobCard>
               ))}
