@@ -19,7 +19,7 @@ const Login = () => {
   };
 
   const handleSignIn = async (e) => {
-    e.preventdeafult();
+    e.preventDefault();
     const form = e.target;
     const email = form.email.value;
     const pass = form.password.value;
