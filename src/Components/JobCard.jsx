@@ -1,12 +1,26 @@
 /* eslint-disable react/prop-types */
 
+import { Link } from "react-router-dom";
+
 const JobCard = ({ job }) => {
-  const { job_title, deadline, description, min_price, max_price, categories } =
-    job;
+  const {
+    job_title,
+    deadlines,
+    description,
+    min_price,
+    max_price,
+    categories,
+    _id,
+  } = job;
   return (
-    <div className="w-full max-w-sm px-4 py-3 bg-white rounded-md shadow-md hover:scale-[1.05] transition-all my-10">
+    <Link
+      to={`/jobDetails/${_id}`}
+      className="w-full max-w-sm px-4 py-3 bg-white rounded-md shadow-md hover:scale-[1.05] transition-all my-10"
+    >
       <div className="flex items-center justify-between">
-        <span className="text-xs font-light text-gray-800 ">{deadline}</span>
+        <span className="text-xs font-light text-gray-800 ">
+          Deadline : {deadlines}
+        </span>
         <span className="px-3 py-1 text-[8px] text-blue-800 uppercase bg-blue-200 rounded-full ">
           {categories}
         </span>
@@ -22,7 +36,7 @@ const JobCard = ({ job }) => {
           Range: ${min_price} - ${max_price}
         </p>
       </div>
-    </div>
+    </Link>
   );
 };
 
