@@ -16,7 +16,7 @@ import Slide from "./Slide";
 
 export default function App() {
   return (
-    <div className="h-[600px] px-8 mx-auto my-10">
+    <div className=" px-8 mx-auto my-10">
       <Swiper
         spaceBetween={30}
         centeredSlides={true}
