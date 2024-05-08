@@ -1,7 +1,21 @@
 import { Link } from "react-router-dom";
 import register from "../../assets/images/register.jpg";
+import { useContext } from "react";
+import { AuthContext } from "../AuthProvider";
 
 const Registration = () => {
+  const { user, setUser, createUser, signInWithGoogle, updateUserProfile } =
+    useContext(AuthContext);
+
+  const handleGoogleForm = async () => {
+    try {
+      await signInWithGoogle();
+      toast.success("Login Success");
+      navigate("/");
+    } catch (error) {
+      toast.error(error?.message);
+    }
+  };
   return (
     <div className="flex justify-center items-center min-h-[calc(100vh-306px)] py-10">
       <div className="flex w-full max-w-sm mx-auto overflow-hidden bg-white rounded-lg shadow-lg  lg:max-w-4xl ">
@@ -40,7 +54,10 @@ const Registration = () => {
               </svg>
             </div>
 
-            <span className="w-5/6 px-4 py-3 font-bold text-center">
+            <span
+              onClick={handleGoogleForm}
+              className="w-5/6 px-4 py-3 font-bold text-center"
+            >
               Sign in with Google
             </span>
           </div>

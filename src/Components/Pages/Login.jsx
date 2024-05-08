@@ -1,7 +1,37 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import login from "../../assets/images/login.jpg";
+import { useContext } from "react";
+import { AuthContext } from "../AuthProvider";
+import toast from "react-hot-toast";
 
 const Login = () => {
+  const { signIn, signInWithGoogle } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  const handleGoogleForm = async () => {
+    try {
+      await signInWithGoogle();
+      toast.success("Login Success");
+      navigate("/");
+    } catch (error) {
+      toast.error(error?.message);
+    }
+  };
+
+  const handleSignIn = async (e) => {
+    e.preventdeafult();
+    const form = e.target;
+    const email = form.email.value;
+    const pass = form.password.value;
+
+    try {
+      await signIn(email, pass);
+      toast.success("Signin Success");
+      navigate("/");
+    } catch (error) {
+      toast.error(error?.message);
+    }
+  };
   return (
     <div className="flex justify-center items-center min-h-[calc(100vh-306px)] py-8">
       <div className="flex w-full max-w-sm mx-auto overflow-hidden bg-white rounded-lg shadow-lg  lg:max-w-4xl ">
@@ -47,7 +77,10 @@ const Login = () => {
               </svg>
             </div>
 
-            <span className="w-5/6 px-4 py-3 font-bold text-center">
+            <span
+              onClick={handleGoogleForm}
+              className="w-5/6 px-4 py-3 font-bold text-center"
+            >
               Sign in with Google
             </span>
           </div>
@@ -61,7 +94,7 @@ const Login = () => {
 
             <span className="w-1/5 border-b dark:border-gray-400 lg:w-1/4"></span>
           </div>
-          <form>
+          <form onSubmit={handleSignIn}>
             <div className="mt-4">
               <label
                 className="block mb-2 text-sm font-medium text-gray-600 "
