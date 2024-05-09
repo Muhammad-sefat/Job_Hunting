@@ -41,6 +41,7 @@ const AddJob = () => {
       );
       console.log(data);
       toast.success("Add Job Successfully");
+      e.target.reset();
     } catch (err) {
       toast.error(err?.message);
     }
