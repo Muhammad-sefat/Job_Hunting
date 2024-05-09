@@ -15,8 +15,19 @@ const MyBids = () => {
     setBids(data);
   };
 
+  const handleStatus = async (id, status) => {
+    console.log(id, status);
+    const { data } = await axios.patch(
+      `${import.meta.env.VITE_API_URL}/bids/${id}`,
+      {
+        status,
+      }
+    );
+    console.log(data);
+    getData();
+  };
   return (
-    <section className="container px-4 mx-auto pt-12">
+    <section className="container px-8 mx-auto pt-12">
       <div className="flex items-center gap-x-3">
         <h2 className="text-lg font-medium text-gray-800 ">My Bids</h2>
 
@@ -103,12 +114,14 @@ const MyBids = () => {
                       <td className="px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
                         <div className="inline-flex items-center px-3 py-1 rounded-full gap-x-2 bg-yellow-100/60 text-yellow-500">
                           <span className="h-1.5 w-1.5 rounded-full bg-yellow-500"></span>
-                          <h2 className="text-sm font-normal ">Pending</h2>
+                          <h2 className="text-sm font-normal ">{bid.status}</h2>
                         </div>
                       </td>
                       <td className="px-4 py-4 text-sm whitespace-nowrap">
                         <button
                           title="Mark Complete"
+                          disabled={bid.status !== "in progress"}
+                          onClick={() => handleStatus(bid._id, "Complete")}
                           className="text-gray-500 transition-colors duration-200   hover:text-red-500 focus:outline-none disabled:cursor-not-allowed"
                         >
                           <svg

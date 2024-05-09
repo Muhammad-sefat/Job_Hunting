@@ -14,14 +14,26 @@ const BidRequests = () => {
     );
     setBids(data);
   };
-  console.log(bids);
+  const handleStatus = async (id, prevStatus, status) => {
+    console.log(id, prevStatus, status);
+    if (prevStatus === status) return console.log("Sry bhai ....hobena");
+
+    const { data } = await axios.patch(
+      `${import.meta.env.VITE_API_URL}/bids/${id}`,
+      {
+        status,
+      }
+    );
+    console.log(data);
+    getData();
+  };
   return (
     <section className="container px-8 mx-auto pt-12">
       <div className="flex items-center gap-x-3">
         <h2 className="text-lg font-medium text-gray-800 ">Bid Requests</h2>
 
         <span className="px-3 py-1 text-xs text-blue-600 bg-blue-100 rounded-full ">
-          {bids.length} Requests
+          {bids?.length} Requests
         </span>
       </div>
 
@@ -85,7 +97,7 @@ const BidRequests = () => {
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200 ">
-                  {bids.map((bid) => (
+                  {bids?.map((bid) => (
                     <tr key={bid._id}>
                       <td className="px-4 py-4 text-sm text-gray-500  whitespace-nowrap">
                         {bid.job_title}
@@ -114,12 +126,18 @@ const BidRequests = () => {
                       <td className="px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
                         <div className="inline-flex items-center px-3 py-1 rounded-full gap-x-2 bg-yellow-100/60 text-yellow-500">
                           <span className="h-1.5 w-1.5 rounded-full bg-yellow-500"></span>
-                          <h2 className="text-sm font-normal ">Pending</h2>
+                          <h2 className="text-sm font-normal ">{bid.status}</h2>
                         </div>
                       </td>
                       <td className="px-4 py-4 text-sm whitespace-nowrap">
                         <div className="flex items-center gap-x-6">
-                          <button className="text-gray-500 transition-colors duration-200   hover:text-red-500 focus:outline-none">
+                          <button
+                            onClick={() =>
+                              handleStatus(bid._id, bid.status, "in progress")
+                            }
+                            disabled={bid.status === "Complete"}
+                            className="text-gray-500 transition-colors duration-200   hover:text-red-500 focus:outline-none"
+                          >
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
                               fill="none"
@@ -136,7 +154,13 @@ const BidRequests = () => {
                             </svg>
                           </button>
 
-                          <button className="text-gray-500 transition-colors duration-200   hover:text-yellow-500 focus:outline-none">
+                          <button
+                            onClick={() =>
+                              handleStatus(bid._id, bid.status, "Rejected")
+                            }
+                            disabled={bid.status === "Complete"}
+                            className="text-gray-500 transition-colors duration-200   hover:text-yellow-500 focus:outline-none"
+                          >
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
                               fill="none"

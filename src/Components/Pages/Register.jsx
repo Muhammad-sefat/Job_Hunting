@@ -3,6 +3,7 @@ import register from "../../assets/images/register.jpg";
 import { useContext } from "react";
 import { AuthContext } from "../AuthProvider";
 import toast from "react-hot-toast";
+import axios from "axios";
 
 const Registration = () => {
   const { user, setUser, createUser, signInWithGoogle, updateUserProfile } =
@@ -12,7 +13,16 @@ const Registration = () => {
 
   const handleGoogleForm = async () => {
     try {
-      await signInWithGoogle();
+      const result = await signInWithGoogle();
+      console.log(result?.user);
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_API_URL}/jwt`,
+        {
+          email: result?.user?.email,
+        },
+        { withCredentials: true }
+      );
+      console.log(data);
       toast.success("Login Success");
       navigate("/");
     } catch (error) {
@@ -29,9 +39,17 @@ const Registration = () => {
     const pass = form.password.value;
 
     try {
-      await createUser(email, pass);
+      const result = await createUser(email, pass);
       await updateUserProfile(name, photo);
-      setUser({ ...user, photoURL: photo, displayName: name });
+      setUser({ ...user?.email, photoURL: photo, displayName: name });
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_API_URL}/jwt`,
+        {
+          email: result?.user?.email,
+        },
+        { withCredentials: true }
+      );
+      console.log(data);
       toast.success("User Register Successfully");
       navigate("/");
     } catch (error) {

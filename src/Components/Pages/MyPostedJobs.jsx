@@ -8,23 +8,20 @@ const MyPostedJobs = () => {
   const [jobs, setJobs] = useState([]);
   useEffect(() => {
     getData();
-  }, [jobs]);
+  }, [user]);
   const getData = async () => {
     const { data } = await axios(
-      `${import.meta.env.VITE_API_URL}/jobs/${user?.email}`
+      `${import.meta.env.VITE_API_URL}/jobs/${user?.email}`,
+      { withCredentials: true }
     );
     setJobs(data);
   };
 
   const deleteButton = async (id) => {
-    console.log("delete");
     try {
-      const { data } = await axios.delete(
-        `${import.meta.env.VITE_API_URL}/jobss/${id}`
-      );
-      console.log(data);
+      await axios.delete(`${import.meta.env.VITE_API_URL}/jobss/${id}`);
       toast.success("Delete Successfully");
-      setJobs();
+      getData();
     } catch (err) {
       toast.error(err?.message);
     }
