@@ -37,15 +37,15 @@ const JobDetails = () => {
 
     const bidData = {
       jobId,
+      job_title,
       price,
       comment,
       deadline,
       email,
       status,
-      buyer_email: buyer?.email,
+      buyer,
       JobDetails,
       category,
-      buyer,
     };
     try {
       axios.post(`${import.meta.env.VITE_API_URL}/bid`, bidData);
